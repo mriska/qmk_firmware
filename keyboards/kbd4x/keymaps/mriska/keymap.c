@@ -19,19 +19,17 @@
 
 // Layer names
 #define _BASE  0
-#define _NUM   1
-#define _ARROW 2
+#define _ARROW 1
+#define _NUM   2
 #define _THREE 3
 #define _FOUR  4
-
-// Unicode definitions
-#define ARING UC(0x00E5) // å
-#define ADIA  UC(0x00E4) // ä
-#define ODIA  UC(0x00F6) // ö
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
   KBD4X = SAFE_RANGE,
+  AA,
+  AE,
+  OE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -42,18 +40,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     MO(_THREE), ___,  KC_LCTL, KC_LALT, KC_LGUI, LT(_ARROW, KC_BSPC), LT(_NUM, KC_SPACE), KC_RGUI, KC_RALT, KC_RCTL, ___,     MO(_FOUR)
   ),
 
-  [_NUM] = LAYOUT_ortho_4x12(
-    KC_GRAVE,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
-    KC_EQUAL,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINUS,
-    S(KC_EQUAL), S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5), S(KC_6), S(KC_7), S(KC_8), S(KC_9), S(KC_0), S(KC_MINUS),
-    ___,         ___,     ___,     ___,     ___,     ___,     ___,     ___,     ___,     ___,     ___,     ___
-  ),
-
   [_ARROW] = LAYOUT_ortho_4x12(
-    ___,      ___,     ___,     ___,        ___,        ___,  ___,  ___,     KC_UP,   ___,     ___,  ARING,
-    ___,      KC_LBRC, KC_RBRC, S(KC_LBRC), S(KC_RBRC), ___,  ___,  KC_LEFT, KC_DOWN, KC_RGHT, ODIA, ADIA,
+    ___,      ___,     ___,     ___,        ___,        ___,  ___,  ___,     KC_UP,   ___,     ___,  AA,
+    ___,      KC_LBRC, KC_RBRC, S(KC_LBRC), S(KC_RBRC), ___,  ___,  KC_LEFT, KC_DOWN, KC_RGHT, OE,   AE,
     ___,      S(KC_9), S(KC_0), S(KC_COMM), S(KC_DOT),  ___,  ___,  ___,     ___,     ___,     ___,  ___,
     ___,      ___,     ___,     ___,        ___,        ___,  ___,  ___,     ___,     ___,     ___,  ___
+  ),
+
+  [_NUM] = LAYOUT_ortho_4x12(
+    S(KC_EQUAL), S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5), S(KC_6), S(KC_7), S(KC_8), S(KC_9), S(KC_0), S(KC_MINUS),
+    KC_EQUAL,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINUS,
+    KC_GRAVE,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  ___,
+    ___,         ___,     ___,     ___,     ___,     KC_DEL,     ___,     ___,     ___,     ___,     ___,     ___
   ),
 
   [_THREE] = LAYOUT_ortho_4x12(
@@ -71,8 +69,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  uint8_t current_mods = get_mods();
+  bool shifted = current_mods & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT));
+  switch (keycode) {
+    case AA:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT("a"));
+      }
+      break;
+    case AE:
+      if (record->event.pressed) {
+        clear_mods();
+        if (shifted) {
+          SEND_STRING(SS_LALT("u")"A");
+        } else {
+          SEND_STRING(SS_LALT("u")"a");
+       }
+       set_mods(current_mods);
+      }
+      break;
+    case OE:
+      if (record->event.pressed) {
+        clear_mods();
+        if (shifted) {
+          SEND_STRING(SS_LALT("u")"O");
+        } else {
+          SEND_STRING(SS_LALT("u")"o");
+        }
+        set_mods(current_mods);
+      }
+      break;
+  }
   return true;
 }
 
