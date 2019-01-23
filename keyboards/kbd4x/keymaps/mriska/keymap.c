@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ARROW] = LAYOUT_ortho_4x12(
     ___,      ___,     ___,     ___,        ___,        ___,  ___,  ___,     KC_UP,   ___,     ___,  ARING,
-    ___,      KC_LBRC, KC_RBRC, S(KC_LBRC), S(KC_RBRC), ___,  ___,  KC_LEFT, KC_DOWN, KC_DOWN, ODIA, ADIA,
+    ___,      KC_LBRC, KC_RBRC, S(KC_LBRC), S(KC_RBRC), ___,  ___,  KC_LEFT, KC_DOWN, KC_RGHT, ODIA, ADIA,
     ___,      S(KC_9), S(KC_0), S(KC_COMM), S(KC_DOT),  ___,  ___,  ___,     ___,     ___,     ___,  ___,
     ___,      ___,     ___,     ___,        ___,        ___,  ___,  ___,     ___,     ___,     ___,  ___
   ),
