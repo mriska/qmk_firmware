@@ -55,10 +55,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_THREE] = LAYOUT_ortho_4x12(
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,       KC__VOLUP,    ___,      ___,  ___,
-    ___,      RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, ___,  ___,  KC__MUTE,  KC__VOLDOWN,  KC_MPLY,  ___,  RESET,
-    ___,      BL_TOGG, BL_STEP, ___,     ___,     ___,  ___,  ___,       ___,          ___,      ___,  ___,
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,       ___,          ___,      ___,  ___
+    ___,      ___,     ___,     ___,     ___,     ___,  ___,  KC_MUTE, KC_VOLU, KC_MPLY, ___,  ___,
+    ___,      RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, ___,  ___,  KC_MRWD, KC_VOLD, KC_MFFD, ___,  RESET,
+    ___,      BL_TOGG, BL_STEP, ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___,
+    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___
   ),
 
   [_FOUR] = LAYOUT_ortho_4x12(
