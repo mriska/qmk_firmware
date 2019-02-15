@@ -36,14 +36,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_ortho_4x12(
     KC_ESC,  KC_Q,          KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,               KC_U,    KC_I,    KC_O,      KC_P,      KC_QUOT,
     KC_TAB,  KC_A,          KC_S,    KC_D,    KC_F,    KC_G,                KC_H,               KC_J,    KC_K,    KC_L,      KC_SCLN,   KC_ENTER,
-    ___,     KC_Z,          KC_X,    KC_C,    KC_V,    KC_B,                KC_N,               KC_M,    KC_COMM, KC_DOT,    KC_SLSH,   ___,
+    KC_HOME, KC_Z,          KC_X,    KC_C,    KC_V,    KC_B,                KC_N,               KC_M,    KC_COMM, KC_DOT,    KC_SLSH,   KC_END,
     KC_LSFT, MO(_THREE),    ___,     KC_LALT, KC_LGUI, LT(_ARROW, KC_BSPC), LT(_NUM, KC_SPACE), KC_RGUI, KC_RALT, ___,       MO(_FOUR), KC_RCTL
   ),
 
   [_ARROW] = LAYOUT_ortho_4x12(
     ___, KC_LPRN, KC_RPRN, KC_LT,   KC_GT,   ___,  ___,  ___,     KC_UP,   ___,     ___,  AA,
     ___, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, ___,  ___,  KC_LEFT, KC_DOWN, KC_RGHT, OE,   AE,
-    ___, ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___,
+    ___, KC_BSLS, KC_PIPE, ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___,
     ___, ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___
   ),
 
