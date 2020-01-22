@@ -22,7 +22,6 @@
 #define _ARROW 1
 #define _NUM   2
 #define _THREE 3
-#define _MOUSE 4
 
 // Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
@@ -34,17 +33,17 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_ortho_4x12(
-    KC_ESC,  KC_Q,          KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,               KC_U,    KC_I,    KC_O,      KC_P,       KC_QUOT,
-    KC_TAB,  KC_A,          KC_S,    KC_D,    KC_F,    KC_G,                KC_H,               KC_J,    KC_K,    KC_L,      KC_SCLN,    KC_ENTER,
-    KC_HOME, KC_Z,          KC_X,    KC_C,    KC_V,    KC_B,                KC_N,               KC_M,    KC_COMM, KC_DOT,    KC_SLSH,    KC_END,
-    KC_LSFT, MO(_THREE),    ___,     KC_LALT, KC_LGUI, LT(_ARROW, KC_BSPC), LT(_NUM, KC_SPACE), KC_RGUI, KC_RALT, ___,       MO(_MOUSE), KC_RCTL
+    KC_ESC,  KC_Q,          KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,               KC_U,    KC_I,    KC_O,   KC_P,    KC_QUOT,
+    KC_TAB,  KC_A,          KC_S,    KC_D,    KC_F,    KC_G,                KC_H,               KC_J,    KC_K,    KC_L,   KC_SCLN, KC_ENTER,
+    KC_HOME, KC_Z,          KC_X,    KC_C,    KC_V,    KC_B,                KC_N,               KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_END,
+    KC_LSFT, MO(_THREE),    ___,     KC_LALT, KC_LGUI, LT(_ARROW, KC_BSPC), LT(_NUM, KC_SPACE), KC_RGUI, KC_RALT, ___,    ___,     KC_RCTL
   ),
 
   [_ARROW] = LAYOUT_ortho_4x12(
-    ___, KC_LPRN, KC_RPRN, KC_LT,   KC_GT,   ___,  ___,        ___,     KC_UP,   ___,     ___,  AA,
-    ___, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, ___,  ___,        KC_LEFT, KC_DOWN, KC_RGHT, OE,   AE,
-    ___, KC_BSLS, KC_PIPE, ___,     ___,     ___,  ___,        ___,     ___,     ___,     ___,  ___,
-    ___, ___,     ___,     ___,     ___,     ___,  MO(_MOUSE), ___,     ___,     ___,     ___,  ___
+    ___, KC_LPRN, KC_RPRN, KC_LT,   KC_GT,   ___,  ___, ___,     KC_UP,   ___,     ___,  AA,
+    ___, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, ___,  ___, KC_LEFT, KC_DOWN, KC_RGHT, OE,   AE,
+    ___, KC_BSLS, KC_PIPE, ___,     ___,     ___,  ___, ___,     ___,     ___,     ___,  ___,
+    ___, ___,     ___,     ___,     ___,     ___,  ___, ___,     ___,     ___,     ___,  ___
   ),
 
   [_NUM] = LAYOUT_ortho_4x12(
@@ -58,13 +57,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ___,      ___,     ___,     ___,     ___,     ___,  ___,  KC_MUTE, KC_VOLU, KC_MPLY, ___,  ___,
     ___,      RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, ___,  ___,  KC_MRWD, KC_VOLD, KC_MFFD, ___,  RESET,
     ___,      BL_TOGG, BL_STEP, ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___,
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___
-  ),
-
-  [_MOUSE]= LAYOUT_ortho_4x12(
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,     KC_MS_U, ___,     ___,  KC_BTN2,
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  KC_MS_L, KC_MS_D, KC_MS_R, ___,  KC_BTN1,
-    ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___,
     ___,      ___,     ___,     ___,     ___,     ___,  ___,  ___,     ___,     ___,     ___,  ___
   ),
 };
