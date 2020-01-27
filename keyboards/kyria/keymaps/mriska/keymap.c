@@ -96,25 +96,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
         case RAISE:
- rgblight_enable_noeeprom();
+            rgblight_enable_noeeprom();
             rgblight_setrgb(RGB_ORANGE);
             rgblight_set();
-
-
             break;
         case LOWER:
-rgblight_enable_noeeprom();
+            rgblight_enable_noeeprom();
             rgblight_setrgb(RGB_GREEN);
             rgblight_set();
-
-
             break;
         case ADJUST:
- rgblight_enable_noeeprom();
+            rgblight_enable_noeeprom();
             rgblight_setrgb(RGB_WHITE);
             rgblight_set();
-
-
             break;
         default: //  for any other layers, or the default layer
             rgblight_disable();
@@ -175,14 +169,17 @@ void matrix_scan_user(void) {
         SEQ_ONE_KEY(KC_C) { // Inline Code
             SEND_STRING("`` " SS_TAP(X_LEFT) SS_TAP(X_LEFT));
         }
-       SEQ_ONE_KEY(KC_Q) { // Invoke Moom
+        SEQ_TWO_KEYS(KC_C, KC_B) { // code block
+            SEND_STRING("```" SS_LSFT("\n\n") "```" SS_TAP(X_UP));
+        }
+        SEQ_ONE_KEY(KC_L) { // Switch language
+            SEND_STRING(SS_LALT(SS_LGUI(" ")));
+        }
+        SEQ_ONE_KEY(KC_Q) { // Invoke Moom
             SEND_STRING(SS_LCTRL(SS_LSFT("q")));
         }
         SEQ_ONE_KEY(KC_P) { // Invoke Password Manager
             SEND_STRING(SS_LCTRL(SS_LSFT("p")));
-        }
-        SEQ_TWO_KEYS(KC_C, KC_B) { // code block
-            SEND_STRING("```" SS_LSFT("\n\n") "```" SS_TAP(X_UP));
         }
     }
 }
