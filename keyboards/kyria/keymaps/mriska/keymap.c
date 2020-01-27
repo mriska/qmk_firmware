@@ -258,18 +258,18 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             case QWERTY:
                 // Move whole words. Hold shift to select while moving.
                 if (clockwise) {
-                    tap_code16(C(KC_RGHT));
+                    tap_code16(LALT(KC_RGHT));
                 } else {
-                    tap_code16(C(KC_LEFT));
+                    tap_code16(LALT(KC_LEFT));
                 }
                 break;
             default:
                 // History scrubbing. For Adobe products, hold shift while moving
                 // backward to go forward instead.
                 if (clockwise) {
-                    tap_code16(C(KC_Z));
+                    tap_code16(LGUI(KC_Y));
                 } else {
-                    tap_code16(C(KC_Y));
+                    tap_code16(LGUI(KC_Z));
                 }
                 break;
         }
