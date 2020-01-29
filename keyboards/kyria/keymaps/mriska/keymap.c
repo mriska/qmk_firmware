@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include <stdio.h>
 
 enum layers {
     QWERTY = 0,
@@ -65,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [ADJUST] = LAYOUT(
-        _______, _______, _______, _______, _______, _______,                                     _______, KC_MUTE, KC_VOLU, KC_MPLY, _______, _______,
-        _______, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, _______,                                     _______, KC_MRWD, KC_VOLD, KC_MFFD, _______, RESET,
-        _______, BL_TOGG, BL_STEP, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, RGB_M_P, _______, RGB_HUD, RGB_HUI, _______,                                     _______, KC_MUTE, KC_VOLU, KC_MPLY, _______, _______,
+        _______, RGB_TOG, RGB_MOD, RGB_SAD, RGB_SAI, _______,                                     _______, KC_MRWD, KC_VOLD, KC_MFFD, _______, RESET,
+        _______, _______, _______, RGB_VAD, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 // /*
@@ -93,26 +94,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-        case RAISE:
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(RGB_ORANGE);
-            rgblight_set();
-            break;
-        case LOWER:
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(RGB_GREEN);
-            rgblight_set();
-            break;
-        case ADJUST:
-            rgblight_enable_noeeprom();
-            rgblight_setrgb(RGB_WHITE);
-            rgblight_set();
-            break;
-        default: //  for any other layers, or the default layer
-            rgblight_disable();
-            break;
-    }
     return update_tri_layer_state(state, LOWER, RAISE, ADJUST);
 }
 
@@ -120,13 +101,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint8_t current_mods = get_mods();
     bool shifted = current_mods & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_RSFT));
     switch (keycode) {
-        // case KC_ESC:
-        //    if (get_highest_layer(layer_state) == QWERTY) {
-        //        return true;
-        //     } else {
-
-        //     }
-        //     break;
         case AA:
             if (record->event.pressed) {
                 SEND_STRING(SS_LALT("a"));
@@ -157,10 +131,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
-
+#ifdef LEADER_ENABLE
 LEADER_EXTERNS();
+#endif
 
 void matrix_scan_user(void) {
+#ifdef LEADER_ENABLE
     LEADER_DICTIONARY() {
         leading = false;
         leader_end();
@@ -181,8 +157,8 @@ void matrix_scan_user(void) {
             SEND_STRING(SS_LCTRL(SS_LSFT("p")));
         }
     }
+#endif
 }
-
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 	return OLED_ROTATION_180;
@@ -211,28 +187,44 @@ static void render_qmk_logo(void) {
   oled_write_P(qmk_logo, false);
 }
 
-static void render_status(void) {
+static void render_logo(void) {
     // QMK Logo and version information
     render_qmk_logo();
-    oled_write_P(PSTR("       Kyria rev1.0\n\n"), false);
+    oled_write_ln_P(PSTR("       Kyria rev1.0"), false);
+    oled_advance_page(true);
+}
 
+static char buffer[16]= { 0 };
+static void render_rgb_status(void) {
+    snprintf(buffer, sizeof(buffer), "Mode:       %3d ", rgblight_get_mode());
+    oled_write_ln(buffer, false);
+    snprintf(buffer, sizeof(buffer), "Hue:        %3d", rgblight_get_hue());
+    oled_write_ln(buffer, false);
+    snprintf(buffer, sizeof(buffer), "Saturation: %3d", rgblight_get_sat());
+    oled_write_ln(buffer, false);
+    snprintf(buffer, sizeof(buffer), "Value:      %3d", rgblight_get_val());
+    oled_write_ln(buffer, false);
+    oled_advance_page(true);
+}
+
+static void render_layer(void) {
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case QWERTY:
-            oled_write_P(PSTR("Default\n"), false);
+            oled_write_ln_P(PSTR("Default"), false);
             break;
         case LOWER:
-            oled_write_P(PSTR("Lower\n"), false);
+            oled_write_ln_P(PSTR("Lower"), false);
             break;
         case RAISE:
-            oled_write_P(PSTR("Raise\n"), false);
+            oled_write_ln_P(PSTR("Raise"), false);
             break;
         case ADJUST:
-            oled_write_P(PSTR("Adjust\n"), false);
+            oled_write_ln_P(PSTR("Adjust"), false);
             break;
         default:
-            oled_write_P(PSTR("Undefined\n"), false);
+            oled_write_ln_P(PSTR("Undefined"), false);
     }
 
     // Host Keyboard LED Status
@@ -244,7 +236,14 @@ static void render_status(void) {
 
 void oled_task_user(void) {
     if (is_keyboard_master()) {
-        render_status(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+        switch (get_highest_layer(layer_state)) {
+        case ADJUST:
+            render_rgb_status();
+            break;
+        default:
+            render_logo(); // Renders the current keyboard state (layer, lock, caps, scroll, etc)
+        }
+        render_layer();
     } else {
         render_kyria_logo();
     }
@@ -261,6 +260,13 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                     tap_code16(LALT(KC_RGHT));
                 } else {
                     tap_code16(LALT(KC_LEFT));
+                }
+                break;
+            case ADJUST:
+                if (clockwise) {
+                    rgblight_step();
+                } else {
+                    rgblight_step_reverse();
                 }
                 break;
             default:
@@ -281,6 +287,13 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                     tap_code(KC_PGDN);
                 } else {
                     tap_code(KC_PGUP);
+                }
+                break;
+            case ADJUST:
+                if (clockwise) {
+                    rgblight_increase_hue();
+                } else {
+                    rgblight_decrease_hue();
                 }
                 break;
             default:
