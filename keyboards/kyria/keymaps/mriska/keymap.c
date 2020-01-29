@@ -291,17 +291,17 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             case ADJUST:
                 if (clockwise) {
-                    rgblight_increase_hue();
-                } else {
                     rgblight_decrease_hue();
+                } else {
+                    rgblight_increase_hue();
                 }
                 break;
             default:
                 // Volume control.
                 if (clockwise) {
-                    tap_code(KC_VOLU);
-                } else {
                     tap_code(KC_VOLD);
+                } else {
+                    tap_code(KC_VOLU);
                 }
                 break;
         }
