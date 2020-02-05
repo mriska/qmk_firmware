@@ -284,24 +284,24 @@ void encoder_update_user(uint8_t index, bool clockwise) {
             case QWERTY:
                 // Scrolling with PageUp and PgDn.
                 if (clockwise) {
-                    tap_code(KC_PGDN);
-                } else {
                     tap_code(KC_PGUP);
+                } else {
+                    tap_code(KC_PGDN);
                 }
                 break;
             case ADJUST:
                 if (clockwise) {
-                    rgblight_decrease_hue();
-                } else {
                     rgblight_increase_hue();
+                } else {
+                    rgblight_decrease_hue();
                 }
                 break;
             default:
                 // Volume control.
                 if (clockwise) {
-                    tap_code(KC_VOLD);
-                } else {
                     tap_code(KC_VOLU);
+                } else {
+                    tap_code(KC_VOLD);
                 }
                 break;
         }
