@@ -131,6 +131,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
+
+uint16_t get_tapping_term(uint16_t keycode) {
+    switch (keycode) {
+        case SFT_T(KC_A):
+        case LCTL_T(KC_S):
+        case LALT_T(KC_D):
+        case LGUI_T(KC_F):
+        case RGUI_T(KC_J):
+        case RALT_T(KC_K):
+        case RCTL_T(KC_L):
+        case RSFT_T(KC_SCLN):
+        case LT(LOWER, KC_BSPC):
+        case LT(RAISE, KC_SPACE):
+            return TAPPING_TERM + 1250;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
 #ifdef LEADER_ENABLE
 LEADER_EXTERNS();
 #endif
@@ -159,6 +178,7 @@ void matrix_scan_user(void) {
     }
 #endif
 }
+
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 	return OLED_ROTATION_180;
