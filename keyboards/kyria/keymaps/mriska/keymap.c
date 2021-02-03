@@ -142,9 +142,10 @@ uint16_t get_tapping_term(uint16_t keycode) {
         case RALT_T(KC_K):
         case RCTL_T(KC_L):
         case RSFT_T(KC_SCLN):
+            return TAPPING_TERM + 500;
         case LT(LOWER, KC_BSPC):
         case LT(RAISE, KC_SPACE):
-            return TAPPING_TERM + 1250;
+            return TAPPING_TERM + 50;
         default:
             return TAPPING_TERM;
     }
